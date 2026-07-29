@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClubBoard — Sports Club Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">CB</span>
+      <div class="brand-text">
+        <span class="brand-name">ClubBoard</span>
+        <span class="brand-sub">Sports Club Mgmt.</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-section="dashboard">
+        <span class="nav-dot">01</span> Dashboard
+      </button>
+      <button class="nav-item" data-section="anggota">
+        <span class="nav-dot">02</span> Anggota
+      </button>
+      <button class="nav-item" data-section="klub">
+        <span class="nav-dot">03</span> Klub
+      </button>
+      <button class="nav-item" data-section="pelatih">
+        <span class="nav-dot">04</span> Pelatih
+      </button>
+      <button class="nav-item" data-section="pendaftaran">
+        <span class="nav-dot">05</span> Pendaftaran
+      </button>
+    </nav>
+
+    <button id="themeToggle" class="theme-toggle" title="Ganti tema">
+      <span id="themeIcon">☾</span> <span id="themeLabel">Mode Gelap</span>
+    </button>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle" class="muted">Ringkasan aktivitas klub olahraga saat ini</p>
+      </div>
+      <div class="server-status" id="serverStatus">
+        <span class="pulse-dot"></span> Menghubungkan ke API...
+      </div>
+    </header>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="view active" id="view-dashboard">
+      <div class="scoreboard-grid">
+        <div class="score-card">
+          <span class="score-label">Total Anggota</span>
+          <span class="score-value" id="statAnggota">--</span>
+        </div>
+        <div class="score-card">
+          <span class="score-label">Total Klub</span>
+          <span class="score-value" id="statKlub">--</span>
+        </div>
+        <div class="score-card">
+          <span class="score-label">Total Pelatih</span>
+          <span class="score-value" id="statPelatih">--</span>
+        </div>
+        <div class="score-card">
+          <span class="score-label">Pendaftaran</span>
+          <span class="score-value" id="statPendaftaran">--</span>
+        </div>
+        <div class="score-card accent">
+          <span class="score-label">Keanggotaan Aktif</span>
+          <span class="score-value" id="statAktif">--</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Klub Terdaftar</h2>
+          <p class="muted">Ikhtisar singkat setiap klub beserta pelatih penanggung jawab</p>
+        </div>
+        <div id="dashboardKlubList" class="klub-preview-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============ ANGGOTA ============ -->
+    <section class="view" id="view-anggota">
+      <div class="toolbar">
+        <input type="text" id="searchAnggota" class="input" placeholder="Cari nama atau email anggota...">
+        <button class="btn btn-primary" id="btnAddAnggota">+ Tambah Anggota</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nama</th><th>Email</th><th>No. Telp</th><th>Tgl Lahir</th><th>Tgl Gabung</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tblAnggota"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="paginationAnggota"></div>
+    </section>
+
+    <!-- ============ KLUB ============ -->
+    <section class="view" id="view-klub">
+      <div class="toolbar">
+        <input type="text" id="searchKlub" class="input" placeholder="Cari nama klub...">
+        <select id="filterKategori" class="input select">
+          <option value="">Semua Kategori</option>
+        </select>
+        <button class="btn btn-primary" id="btnAddKlub">+ Tambah Klub</button>
+      </div>
+      <div class="card-grid" id="cardKlub"></div>
+    </section>
+
+    <!-- ============ PELATIH ============ -->
+    <section class="view" id="view-pelatih">
+      <div class="toolbar">
+        <div></div>
+        <button class="btn btn-primary" id="btnAddPelatih">+ Tambah Pelatih</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Nama</th><th>Spesialisasi</th><th>No. Telp</th><th>Email</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tblPelatih"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ PENDAFTARAN ============ -->
+    <section class="view" id="view-pendaftaran">
+      <div class="toolbar">
+        <div></div>
+        <button class="btn btn-primary" id="btnAddPendaftaran">+ Tambah Pendaftaran</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Anggota</th><th>Klub</th><th>Tgl Daftar</th><th>Status</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tblPendaftaran"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===================== MODAL ===================== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Form</h3>
+      <button class="modal-close" id="modalClose">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===================== TOAST + LOADER ===================== -->
+<div id="toastContainer" class="toast-container"></div>
+<div id="loader" class="loader-overlay"><div class="loader-spinner"></div></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
